@@ -4,6 +4,8 @@
 """
 import input
 import os
+from utils import webpage
+import json
 
 
 def divideArticle():
@@ -97,18 +99,56 @@ def cleanHtmlTag():
     '''
         清楚html标记
     '''
+    # 定义变量
     duringPath = 'data\\unprocessed'
-    fr = open(os.path.join(input.rootPath,duringPath,'sina_record.txt'),'r',encoding='utf-8')
-    fw = open(os.path.join(input.rootPath,duringPath,'structed_1.txt'),'w',encoding='utf-8')
+    # 这里可以进行修改
+    # fr = open(os.path.join(input.rootPath,duringPath,'sina_record.txt'),'r',encoding='utf-8')
+    fr = open(os.path.join(input.rootPath,duringPath,'tencent_record.txt'),'r',encoding='utf-8')
+    fw = open(os.path.join(input.rootPath,duringPath,'structured.txt'),'a',encoding='utf-8')
+    i = 1
     while True:
         line = fr.readline()
         if line:
             lineList = line.strip().split('""')
             title = lineList[0].replace('"','').strip()
             # 清洗文章
-            content = cleanTags(lineList[1])
+            content = webpage.extractContentBetweenTags(lineList[1])
             outputLine = title + '$$' + content
             fw.writelines(outputLine + '\n')
+            print('输出第[',i,']条')
+            i += 1
+        else:
+            break
+    fr.close()
+    fw.close()
+
+
+
+def structured2json():
+    # 定义变量
+    during = 'data\\unprocessed'
+    outputFilePath = input.rootPath + '\\' + during + '\\' + 'final_report.txt'
+    # I/O
+    fr = open(os.path.join(input.rootPath,during,'structured.txt'),'r',encoding='utf-8')
+    fw = open(outputFilePath,'w',encoding='utf-8')
+    #
+    i = 1
+    while True:
+        line = fr.readline().strip()
+        if line:
+            if '$$' in line:
+                lineList = line.split('$$')
+                if len(lineList) == 2:
+                    try:
+                        # 使用这里的数据生成dict格式
+                        dic = {'title':lineList[0],'content':lineList[1]}
+                        jsonLine = json.dumps(dic,ensure_ascii=False)
+                        print(jsonLine)
+                        fw.writelines(jsonLine + '\n')
+                        print(i)
+                        i += 1
+                    except Exception as ex:
+                        print(str(dic))
         else:
             break
     fr.close()
@@ -126,4 +166,7 @@ if __name__ == '__main__':
     # divideSinaArticle2Line()
 
     # 将record去除html标记，形成“标题”，“内容”配对的记录
-    cleanHtmlTag()
+    # cleanHtmlTag()
+
+    # 将结构化的数据转换成json格式
+    structured2json()
