@@ -1,7 +1,7 @@
 # -*- encoding:utf-8 -*-
 import re
 import json
-import input
+import index
 
 # print(input.rootPath)
 
