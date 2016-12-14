@@ -6,6 +6,30 @@ import index
 # print(input.rootPath)
 
 
+# testList = []
+# if testList:
+#     print('j')
+
+
+# testDic = {('d','a'):'sss'}
+# test = 3.4
+# print(type(test))
+# print(str(test))
+
+
+# test = ('A',['1','2','3'])
+# print(type(test[1]))
+
+
+# print(type(xlList))
+# print(xlList[0])
+# print(type(xlList[0][0]))
+# tagList = eval(xlList[0][1])
+# print(tagList)
+# for item in tagList:
+#     print(item,item[0],type(item[1]))
+
+
 
 # testDic = {1:4,'a':'b','marianne':'michael'}
 # testDic2 = {'c':'d','m':'l'}
