@@ -1,12 +1,13 @@
 # -*- encoding:utf-8 -*-
-"""
-    Source:news report txt
-    Instruction:extract article reported from html
-"""
 import index
 import os
 from utils import webpage
 import json
+"""
+    Target：从html爬取数据中提取内容
+    Source:news report txt
+    Instruction:extract article reported from html
+"""
 
 
 def divideArticle():

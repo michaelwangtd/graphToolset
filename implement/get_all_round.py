@@ -1,14 +1,15 @@
 # -*- encoding:utf-8 -*-
+
+import index
+import os
+from utils import io,operateString,webpage
 """
+    Target:找出投资事件中所有的轮次，生成轮次数据集set
     Source:investEvents_20161019121629.txt
     Instruction:
     1）修正词库中轮次的表示
     2）确定轮次的顺序
 """
-
-import index
-import os
-from utils import io,operateString,webpage
 
 
 if __name__ == '__main__':
