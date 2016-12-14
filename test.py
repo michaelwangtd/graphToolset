@@ -3,6 +3,16 @@ import re
 import json
 import index
 
+
+# testList = ['1','2','1']
+# for key,value in enumerate(testList):
+#     print(key,value)
+#     if value == '1':
+#         print('进行caozuo')
+#         value = '2'
+# print(testList)
+
+
 # print(input.rootPath)
 
 
