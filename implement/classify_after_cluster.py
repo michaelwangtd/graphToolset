@@ -72,25 +72,30 @@ def getClassifiedTupeList(classTagList,objList):
         classTagDic[item] = []
     # classTagDicKeyList = list(classTagDic.keys())
     # 遍历
-    for item in objList:
-        productTagList = item.productTags[0].split(' ')
-        for i in range(len(classTagList)):
-            if classTagList[i][0] in productTagList:
-                classTagDic[classTagList[i]].append(item)
-                break
-    # for tagTuple in classTagList:
-    #     if objList:
-    #         for key,value in enumerate(objList):
-    #             if value.flag[0] == '0' and tagTuple[0] in value.productTags[0].split(' '):
-    #                 classTagDic[tagTuple].append(value)
-    #                 value.flag[0] = '1'
-            # for companyObj in objList:
-            #     if companyObj.flag[0] == '0' and tagTuple[0] in companyObj.productTags[0].split(' '):
-            #         classTagDic[tagTuple].append(companyObj)
-            #         companyObj.flag[0] = '1'
+
+    # for item in objList:
+    #     productTagList = item.productTags[0].split(' ')
+    #     for i in range(len(classTagList)):
+    #         if classTagList[i][0] in productTagList:
+    #             classTagDic[classTagList[i]].append(item)
+    #             break
+    # print(classTagList)
+    # exit(0)
+
+    for tagTuple in classTagList:
+        if objList:
+            # for key,value in enumerate(objList):
+            #     if value.flag[0] == '0' and tagTuple[0] in value.productTags[0].split(' '):
+            #         classTagDic[tagTuple].append(value)
+            #         value.flag[0] = '1'
+            for companyObj in objList:
+                if companyObj.flag == '0' and (tagTuple[0] in companyObj.productTags[0].split(' ')):
+                    classTagDic[tagTuple].append(companyObj)
+                    companyObj.flag = '1'
                     # objList.remove(companyObj)
         # if not objList:
         #     break
+    # print(len(objList))
     # 将字典转换成列表
     for key,value in classTagDic.items():
         if classTagDic[key]:
@@ -102,10 +107,10 @@ def getClassifiedTupeList(classTagList,objList):
 
 if __name__ == '__main__':
     # 定义变量
-    clusterTagPath = index.rootPath + '/data/unprocessed/' + 'transit_cluster_tags.xlsx'
-    nodePath = index.rootPath + '/data/unprocessed/' + 'transit_nodes.xls'
-    transitClassifyTags = index.rootPath + '/data/processed/' + '物流分类标签.csv'
-    transitNode = index.rootPath + '/data/processed/' + '物流节点.csv'
+    clusterTagPath = index.ROOTPATH + '/data/unprocessed/' + 'transit_cluster_tags.xlsx'
+    nodePath = index.ROOTPATH + '/data/unprocessed/' + 'transit_nodes.xls'
+    transitClassifyTags = index.ROOTPATH + '/data/processed/' + '物流分类标签.csv'
+    transitNode = index.ROOTPATH + '/data/processed/' + '物流节点.csv'
     fw_classify = open(transitClassifyTags,'w',encoding='utf-8')
     fw_node = open(transitNode,'w',encoding='utf-8')
     # 已分类元组列表

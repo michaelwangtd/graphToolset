@@ -16,7 +16,7 @@ if __name__ == '__main__':
     duringPath = 'data\\unprocessed'
     roundSet = set()
 
-    filePath = os.path.join(index.rootPath,duringPath,'investEvents_20161019121629.txt')
+    filePath = os.path.join(index.ROOTPATH,duringPath,'investEvents_20161019121629.txt')
     # 加载数据
     jsonList = io.loadData2Json(filePath)
 

@@ -6,4 +6,7 @@
 """
 import os
 
-rootPath = os.path.dirname(__file__)
+ROOTPATH = os.path.dirname(__file__)
+DATA = 'data'
+PROCESSED = 'processed'
+UNPROCESSED = 'unprocessed'

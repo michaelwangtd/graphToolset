@@ -10,6 +10,29 @@ import xlrd
 import xlwt
 
 
+def getProcessedFilePath(fileName):
+    '''
+    默认的路径为：'rootPath/data/processed/'
+    :param fileName:
+    :return:完整的文件路径
+    '''
+    if fileName:
+        filePath = os.path.join(index.ROOTPATH,index.DATA,index.PROCESSED,fileName)
+        return filePath
+
+
+def getUnprocessedFilePath(fileName):
+    '''
+    默认的路径为：'rootPath/data/unprocessed/'
+    :param fileName:
+    :return:完整的文件路径
+    '''
+    if fileName:
+        filePath = os.path.join(index.ROOTPATH,index.DATA,index.UNPROCESSED,fileName)
+        if os.path.exists(filePath):
+            return filePath
+
+
 def writeContent2Excel(infoList,outputFilePath):
     """
         “覆盖”的方式写入数据

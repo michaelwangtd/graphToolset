@@ -17,9 +17,9 @@ def divideArticle():
     # 变量定义
     duringPath = 'data\\unprocessed'
     # I/O操作
-    fr = open(os.path.join(index.rootPath, duringPath, 'article_html.txt'), 'r', encoding='utf-8')
-    fw_sina = open(os.path.join(index.rootPath, duringPath, 'sina_report.txt'), 'w', encoding='utf-8')
-    fw_tencent = open(os.path.join(index.rootPath, duringPath, 'tencent_report.txt'), 'w', encoding='utf-8')
+    fr = open(os.path.join(index.ROOTPATH, duringPath, 'article_html.txt'), 'r', encoding='utf-8')
+    fw_sina = open(os.path.join(index.ROOTPATH, duringPath, 'sina_report.txt'), 'w', encoding='utf-8')
+    fw_tencent = open(os.path.join(index.ROOTPATH, duringPath, 'tencent_report.txt'), 'w', encoding='utf-8')
     # 读取文件
     i = 0
     while True:
@@ -44,8 +44,8 @@ def divideTencentArticle2Line():
     # 定义变量
     duringPath = 'data\\unprocessed'
     # I/O
-    fr = open(os.path.join(index.rootPath, duringPath, 'tencent_report.txt'), 'r', encoding='utf-8')
-    fw = open(os.path.join(index.rootPath, duringPath, 'tencent_record.txt'), 'w', encoding='utf-8')
+    fr = open(os.path.join(index.ROOTPATH, duringPath, 'tencent_report.txt'), 'r', encoding='utf-8')
+    fw = open(os.path.join(index.ROOTPATH, duringPath, 'tencent_record.txt'), 'w', encoding='utf-8')
     outputLine = ''
     while True:
         line = fr.readline()
@@ -73,8 +73,8 @@ def divideSinaArticle2Line():
     # 定义变量
     duringPath = 'data\\unprocessed'
     # I/O
-    fr = open(os.path.join(index.rootPath, duringPath, 'sina_report.txt'), 'r', encoding='utf-8')
-    fw = open(os.path.join(index.rootPath, duringPath, 'sina_record.txt'), 'w', encoding='utf-8')
+    fr = open(os.path.join(index.ROOTPATH, duringPath, 'sina_report.txt'), 'r', encoding='utf-8')
+    fw = open(os.path.join(index.ROOTPATH, duringPath, 'sina_record.txt'), 'w', encoding='utf-8')
     outputLine = ''
     i = 1
     while True:
@@ -105,8 +105,8 @@ def cleanHtmlTag():
     duringPath = 'data\\unprocessed'
     # 这里可以进行修改
     # fr = open(os.path.join(input.rootPath,duringPath,'sina_record.txt'),'r',encoding='utf-8')
-    fr = open(os.path.join(index.rootPath, duringPath, 'tencent_record.txt'), 'r', encoding='utf-8')
-    fw = open(os.path.join(index.rootPath, duringPath, 'structured.txt'), 'a', encoding='utf-8')
+    fr = open(os.path.join(index.ROOTPATH, duringPath, 'tencent_record.txt'), 'r', encoding='utf-8')
+    fw = open(os.path.join(index.ROOTPATH, duringPath, 'structured.txt'), 'a', encoding='utf-8')
     i = 1
     while True:
         line = fr.readline()
@@ -129,9 +129,9 @@ def cleanHtmlTag():
 def structured2json():
     # 定义变量
     during = 'data\\unprocessed'
-    outputFilePath = index.rootPath + '\\' + during + '\\' + 'final_report.txt'
+    outputFilePath = index.ROOTPATH + '\\' + during + '\\' + 'final_report.txt'
     # I/O
-    fr = open(os.path.join(index.rootPath, during, 'structured.txt'), 'r', encoding='utf-8')
+    fr = open(os.path.join(index.ROOTPATH, during, 'structured.txt'), 'r', encoding='utf-8')
     fw = open(outputFilePath,'w',encoding='utf-8')
     #
     i = 1

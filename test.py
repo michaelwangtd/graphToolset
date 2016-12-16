@@ -2,7 +2,29 @@
 import re
 import json
 import index
+# from collections import *
 
+
+if __name__ == '__main__':
+    try:
+        testList = ['a','b','c','d']
+        a = 0
+        for i in range(len(testList)):
+            a +=1
+            print(a )
+            if i == 0:
+                testList.remove(testList[i])
+                testList[3] = 1
+        print(testList)
+    except:
+        print('---')
+
+
+
+
+
+
+# dic = OrderedDict()
 
 # testList = ['1','2','1']
 # for key,value in enumerate(testList):
