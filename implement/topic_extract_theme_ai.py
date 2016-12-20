@@ -56,9 +56,23 @@ def isThemeInFieldTagList(themeList):
     return False
 
 
+def filterBlackwordList(themeList,blackwordList):
+    resultList = []
+    for item in themeList:
+        if item not in blackwordList:
+            resultList.append(item)
+    return resultList
+
+
+def joinTag(cleanedThemeList):
+    resultList = []
+    for item in cleanedThemeList:
+        resultList.append(item.replace(' ','-'))
+    return resultList
 
 
 if __name__ == '__main__':
+    blackwordList = ['节点','我觉得','Do','Mo','Cor']
     # 获取路径
     titleFilePath = io.getUnprocessedFilePath('topic_ai_title_name.csv')
     sentimentFilePath = io.getSourceFilePath('sentiment_invest.txt')
@@ -86,15 +100,22 @@ if __name__ == '__main__':
                 content = infoList[i]['sentimentInvestDesc']
                 # 提取文档对应主题
                 themeList = jieba.analyse.extract_tags(content,topK=20)
+                print('原始提取的标签:',themeList)
                 # 过滤标签
-                cleanedThemeList = cleanTheme(themeList)
-                # print('获得了cleanedThemeList:',cleanedThemeList)
+                tempThemeList = cleanTheme(themeList)
+
+                # 剔除黑名单标签
+                cleanedThemeList = filterBlackwordList(tempThemeList,blackwordList)
+                print('筛选后的标签：',cleanedThemeList,'文章标题：',infoList[i]['sentimentInvestTitle'])
+
                 if cleanedThemeList:
                     # 5 根据领域列表筛选文章
                     if isThemeInFieldTagList(cleanedThemeList):
                         title = infoList[i]['sentimentInvestTitle']
                         originTags = ' '.join(infoList[i]['sentimentInvestTags'])
+                        # 有空格的标签用‘-’连接起来
+                        finalThemeList = joinTag(cleanedThemeList)
                         # 持久化
-                        outputLine = title.replace(',','，') + ',' + ' '.join(cleanedThemeList) + ',' + originTags
+                        outputLine = title.replace(',','，') + ',' + ' '.join(finalThemeList) + ',' + originTags
                         fw.write(outputLine + '\n')
     fw.close()
