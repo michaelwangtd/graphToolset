@@ -10,6 +10,17 @@ import xlrd
 import xlwt
 
 
+def getSourceFilePath(fileName):
+    '''
+    默认的路径为：'rootPath/data/source/'
+    :param fileName:
+    :return:完整的文件路径
+    '''
+    if fileName:
+        filePath = os.path.join(index.ROOTPATH,index.DATA,index.SOURCE,fileName)
+        return filePath
+
+
 def getProcessedFilePath(fileName):
     '''
     默认的路径为：'rootPath/data/processed/'
@@ -85,3 +96,30 @@ def loadData2Json(filePath):
             else:
                 break
     return jsonList
+
+
+def readListFromTxt(filePath):
+    infoList = []
+    if os.path.exists(filePath):
+        f = open(filePath,'r',encoding='utf-8')
+        while True:
+            line = f.readline()
+            if line:
+                temp = line.strip()
+                infoList.append(temp)
+            else:
+                break
+        f.close()
+    return infoList
+
+
+def writeList2Txt(filePath,infoList):
+    if infoList:
+        if os.path.exists(filePath):
+            f = open(filePath,'w',encoding='utf-8')
+            for i in range(len(infoList)):
+                outputLine = infoList[i].strip()
+                f.write(outputLine + '\n')
+            f.close()
+
+

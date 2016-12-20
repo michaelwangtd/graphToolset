@@ -10,3 +10,4 @@ ROOTPATH = os.path.dirname(__file__)
 DATA = 'data'
 PROCESSED = 'processed'
 UNPROCESSED = 'unprocessed'
+SOURCE = 'source'
