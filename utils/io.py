@@ -88,7 +88,7 @@ def loadData2Json(filePath):
                 try:
                     temp = line.strip()
                     lineJson = json.loads(temp,encoding='utf-8')
-                    print(i,type(lineJson),str(lineJson))
+                    # print(i,type(lineJson),str(lineJson))
                     i += 1
                     jsonList.append(lineJson)
                 except Exception as ex:
