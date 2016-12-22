@@ -31,6 +31,18 @@ def initDic():
     return initDic
 
 
+def analyseTag():
+    krTagFilePath = io.getSourceFilePath('topic_article_kr.txt')
+    pwTagFilePath = io.getSourceFilePath('topic_article_pw.txt')
+
+    krArticleList = io.loadData2Json(krTagFilePath)
+    pwArticleList = io.loadData2Json(pwTagFilePath)
+
+    i = 1
+    for item in pwArticleList:
+        if not item['tag']:
+            i += 1
+    print(i)
 
 
 if __name__ == '__main__':
@@ -42,56 +54,60 @@ if __name__ == '__main__':
     tagbaseFilePath = io.getSourceFilePath('tagbase.txt')
     # outputFilePath = io.getProcessedFilePath('fenci.xls')
 
-    # 加载jieba
-    jieba.load_userdict(tagbaseFilePath)
+    # analyse result
+    analyseTag()
 
-    # 字典列表
-    dicList = []
 
-    print(time.localtime())
-    # kr持久化
+    # # 加载jieba
+    # jieba.load_userdict(tagbaseFilePath)
+    #
+    # # 字典列表
+    # dicList = []
+
+    # print(time.localtime())
+    # # kr持久化
     # fw = open(outputKrFilePath, 'w', encoding='utf-8')
-    # 品玩持久化
-    fw = open(outputPwFilePath, 'w', encoding='utf-8')
+    # # 品玩持久化
+    # fw = open(outputPwFilePath, 'w', encoding='utf-8')
 
-    # 品玩文章
-    pwInfoList = io.loadData2Json(pwFilePath)
-    i = 1
-    for report in pwInfoList:
-        if report: 
-            try:
-                content = report['sentimentInvestDesc']
-                # 1 自定义停用词修正
-                cutOne = cutWord.cutStopWord(content)
-                # 2 过滤掉标签符号等
-                cutTwo = cutWord.cutNoiseWord(cutOne)
-                # 3 提取关键词
-                tagList = jieba.analyse.extract_tags(cutTwo)
-                # 4 合并规则
-                # 5 提取标签
-                themeList = extractTheme(tagList,tagbaseFilePath)
-                # print(i,themeList,reportList[2])
-                # 封装json格式字典
-                initDic = OrderedDict()
-                initDic['title'] = report['sentimentInvestTitle']
-                initDic['time'] = report['sentimentInvestDate']
-                initDic['url'] = ''
-                initDic['tag'] = themeList
-                initDic['originalTag'] = report['sentimentInvestTags']
-                initDic['content'] = report['sentimentInvestDesc']
-
-                # 存储到列表中
-                # dicList.append(initDic)
-                # temp = json.dumps(initDic,ensure_ascii=False)
-                # print(i,type(temp),temp)
-
-                # 直接写入文件
-                jsonDic = json.dumps(initDic, ensure_ascii=False)
-                fw.write(jsonDic + '\n')
-                # print(i)
-                i += 1
-            except Exception as ex:
-                print(ex)
+    # # 品玩文章
+    # pwInfoList = io.loadData2Json(pwFilePath)
+    # i = 1
+    # for report in pwInfoList:
+    #     if report:
+    #         try:
+    #             content = report['sentimentInvestDesc']
+    #             # 1 自定义停用词修正
+    #             cutOne = cutWord.cutStopWord(content)
+    #             # 2 过滤掉标签符号等
+    #             cutTwo = cutWord.cutNoiseWord(cutOne)
+    #             # 3 提取关键词
+    #             tagList = jieba.analyse.extract_tags(cutTwo)
+    #             # 4 合并规则
+    #             # 5 提取标签
+    #             themeList = extractTheme(tagList,tagbaseFilePath)
+    #             # print(i,themeList,reportList[2])
+    #             # 封装json格式字典
+    #             initDic = OrderedDict()
+    #             initDic['title'] = report['sentimentInvestTitle']
+    #             initDic['time'] = report['sentimentInvestDate']
+    #             initDic['url'] = ''
+    #             initDic['tag'] = themeList
+    #             initDic['originalTag'] = report['sentimentInvestTags']
+    #             initDic['content'] = report['sentimentInvestDesc']
+    #
+    #             # 存储到列表中
+    #             # dicList.append(initDic)
+    #             # temp = json.dumps(initDic,ensure_ascii=False)
+    #             # print(i,type(temp),temp)
+    #
+    #             # 直接写入文件
+    #             jsonDic = json.dumps(initDic, ensure_ascii=False)
+    #             fw.write(jsonDic + '\n')
+    #             # print(i)
+    #             i += 1
+    #         except Exception as ex:
+    #             print(ex)
 
     # # 36kr文章
     # krInfoList = io.readListFromTxt(krFilePath)
@@ -134,8 +150,8 @@ if __name__ == '__main__':
     #             except Exception as ex:
     #                 print(ex)
 
-    fw.close()
-    print(time.localtime())
+    # fw.close()
+    # print(time.localtime())
 
 
     # # dicList写入文件

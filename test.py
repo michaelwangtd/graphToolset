@@ -7,6 +7,10 @@ import jieba.analyse
 from utils import io,cutWord
 import time
 
+
+
+
+
 # sum = 0
 # first = time.time()
 # for i in range(10000):
