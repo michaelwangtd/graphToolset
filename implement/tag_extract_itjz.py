@@ -21,6 +21,13 @@ def getProductCompanyList(itjzInfoList):
 
 
 if __name__ == '__main__':
+
+
+
+
+    """
+        从itjz中筛选出productCompany，提取出描述当中含有特定长度“顿号”的描述
+    """
     itjzFilePath = io.getSourceFilePath('investEvents_20161019121629.txt')
     itjzPCSignal2FilePath = io.getProcessedFilePath('itjzProductCompany_signal_2.txt')
     itjzPCSignal1FilePath = io.getProcessedFilePath('itjzProductCompany_signal_1.txt')
@@ -30,7 +37,7 @@ if __name__ == '__main__':
 
     # fw = open(itjzPCSignal2FilePath,'w',encoding='utf-8')
     # fw = open(itjzPCSignal1FilePath,'w',encoding='utf-8')
-    fw = open(itjzPCSignaldy2FilePath,'w',encoding='utf-8')
+    # fw = open(itjzPCSignaldy2FilePath,'w',encoding='utf-8')
 
     # 获取productCompany信息列表
     productCompanyDicList = getProductCompanyList(itjzInfoList)
@@ -43,7 +50,7 @@ if __name__ == '__main__':
             # if targetIndexList:
             if len(targetIndexList) > 2 :
                 outputLine = value['name'] + ',' + value['productDesc'].replace(',','，')
-                fw.write(outputLine + '\n')
+                # fw.write(outputLine + '\n')
                 i += 1
     print('i:',i)
-    fw.close()
+    # fw.close()

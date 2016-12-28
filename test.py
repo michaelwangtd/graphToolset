@@ -28,7 +28,11 @@ def getEndIndex(index,cake):
             return index + len(cake)
 
 
+
 def getCleanedContent(testTxt):
+    """
+        过滤掉凡是有特殊符号存在的子句
+    """
     targetIndexList = [target.start() for target in re.finditer('、', testTxt)]  # [24, 29, 34, 38]
     if targetIndexList:
         # print(targetIndexList)
@@ -61,6 +65,9 @@ def getInputContent(contentList):
 
 
 def getCleanedContent2(content):
+    """
+        分词之后获取符号两边的2个词
+    """
     flagList = []
     contentList = []
     cakeList = list(jieba.cut(content))
@@ -89,7 +96,11 @@ def getCleanedContent2(content):
     return ''.join(contentList)
 
 
+
 def getCleanedContent3(content):
+    """
+        按照4个字符，分别在两边过滤信息
+    """
     flagList = []
     contentList = []
     # cakeList = list(jieba.cut(content))
@@ -138,14 +149,14 @@ if __name__ == '__main__':
     testTxt = """美洽是一款精致、实用的在线客服软件，为企业快速搭建和用户实时沟通的桥梁。通过多平台接入、在线沟通、访客列表，历史对话、数据报表等模块，多方位的支持企业完成客服工作，帮助企业提高客户服务质量和营销转化率。目前，美洽已为超过 30，000 家企业提供服务，用户遍及医疗、教育、互联网、电子商务、金融、旅游等行业。"""
 
 
-    # inputFilePath = io.getProcessedFilePath('itjzProductCompany_signal_dy2.csv')
-    # infoList = io.readListFromTxt(inputFilePath)
-    # i = 1
-    # for item in infoList:
-    #     contentList = item.split(',')
-    #     print(i,contentList[1])
-    #     print(i,getCleanedContent2(contentList[1]))
-    #     i += 1
+    inputFilePath = io.getProcessedFilePath('itjzProductCompany_signal_dy2.csv')
+    infoList = io.readListFromTxt(inputFilePath)
+    i = 1
+    for item in infoList:
+        contentList = item.split(',')
+        print(i,contentList[1])
+        print(i,getCleanedContent3(contentList[1]))
+        i += 1
 
 
     ## 最开始按整句剔除的逻辑
@@ -165,9 +176,9 @@ if __name__ == '__main__':
     # print('result:',result)
 
 
-    print(testTxt)
-    result = getCleanedContent3(testTxt)
-    print(result)
+    # print(testTxt)
+    # result = getCleanedContent3(testTxt)
+    # print(result)
     # contentList = testTxt.replace('！','。').split('。')
     # regularList = getInputContent(contentList)
     # for item in regularList:
