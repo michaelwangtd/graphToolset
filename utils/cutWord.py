@@ -8,7 +8,7 @@ import index
 
 def cutStopWord(content):
     # 自定义停词列表
-    stopWordList = index.CUSTOMSTOPWORDLIST
+    stopWordList = index.CUSTOM_STOP_WORD_LIST
     for item in stopWordList:
         content = content.replace(item,'')
     return content
