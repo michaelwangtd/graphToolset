@@ -2,7 +2,7 @@
 
 import index
 import os
-from utils import io,operateString,webpage
+from utils import io,util,webpage
 """
     Target:找出投资事件中所有的轮次，生成轮次数据集set
     Source:investEvents_20161019121629.txt

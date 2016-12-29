@@ -1,7 +1,7 @@
 #!usr/bin/env python
 #-*- coding:utf-8 -*-
 
-from utils import io,operateString,webpage,cutWord
+from utils import io,util,webpage,cutWord
 import jieba.analyse
 from collections import *
 import json

@@ -6,157 +6,180 @@ import jieba.analyse
 # from collections import *
 from utils import io,cutWord
 import time
+import redis
+import tensorflow as tf
+
+#Creates a graph.
+a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name='a')
+b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name='b')
+c = tf.matmul(a, b)
+#Creates a session with log_device_placement set to True.
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+#Runs the op.
+print (sess.run(c))
 
 
-def getStartIndex(index,cake):  # 上上签是一个电子签约云平台，致力于帮助互联网金融
-    if cake:
-        leftIndexList = [left.start() for left in re.finditer('，|。|！',cake)]
-        # print(leftIndexList)
-        if leftIndexList:
-            return leftIndexList[len(leftIndexList)-1]
-        else:
-            return 0
-
-def getEndIndex(index,cake):
-    if cake:
-        # print(index,cake)
-        rightIndexList = [right.start() for right in re.finditer('，|。|！',cake)]
-        # print(rightIndexList)
-        if rightIndexList:
-            return index + rightIndexList[0] + 1
-        else:
-            return index + len(cake)
+# print(13009/15472)
 
 
-
-def getCleanedContent(testTxt):
-    """
-        过滤掉凡是有特殊符号存在的子句
-    """
-    targetIndexList = [target.start() for target in re.finditer('、', testTxt)]  # [24, 29, 34, 38]
-    if targetIndexList:
-        # print(targetIndexList)
-        # print(testTxt[targetIndexList[len(targetIndexList)-1]+1:])
-        if targetIndexList[len(targetIndexList) - 1] < len(testTxt):
-            # 找到前一个标点的索引
-            leftIndex = getStartIndex(targetIndexList[0], testTxt[:targetIndexList[0]])
-            print('leftIndex:', leftIndex)
-            # print(testTxt[0:leftIndex])
-            # 找到后一个标签的索引
-            rightIndex = getEndIndex(targetIndexList[len(targetIndexList) - 1],
-                                     testTxt[targetIndexList[len(targetIndexList) - 1] + 1:])
-            print('rightIndex:', rightIndex)
-            # print(testTxt[rightIndex+1:])
-            if testTxt[0:leftIndex]:
-                resultTxt = testTxt[0:leftIndex] + '。' + testTxt[rightIndex + 1:]
-            else:
-                resultTxt = testTxt[0:leftIndex] + testTxt[rightIndex + 1:]
-            print('resultTxt:', resultTxt)
-            return resultTxt
-    return testTxt
-
-
-def getInputContent(contentList):
-    resultList = []
-    for item in contentList:
-        if item:
-            resultList.append(item.strip()+'。')
-    return resultList
-
-
-def getCleanedContent2(content):
-    """
-        分词之后获取符号两边的2个词
-    """
-    flagList = []
-    contentList = []
-    cakeList = list(jieba.cut(content))
-    # 标记flag索引位置
-    for i in range(len(cakeList)):
-        if cakeList[i] in ['、','和','以及']:  # 找到符号索引
-            # 符号左半部分
-            if i > 1:
-                flagList.extend([i,i-1,i-2])
-            else:
-                while i >= 0:
-                    flagList.append(i)
-                    i -= 1
-            # 符号右半部分
-            if i < len(cakeList)-2-1:
-                flagList.extend([i,i+1,i+2])
-            else:
-                while i < len(cakeList):
-                    flagList.append(i)
-                    i += 1
-    # 获取过滤结果
-    flagList = list(set(flagList))
-    for i in range(len(cakeList)):
-        if i not in flagList:
-            contentList.append(cakeList[i])
-    return ''.join(contentList)
-
-
-
-def getCleanedContent3(content):
-    """
-        按照4个字符，分别在两边过滤信息
-    """
-    flagList = []
-    contentList = []
-    # cakeList = list(jieba.cut(content))
-    # 标记flag索引位置
-    for i in range(len(content)):
-        # if cakeList[i] in ['、','和','以及']:  # 找到符号索引
-        if content[i] in ['、']:  # 找到符号索引
-            # 符号左半部分
-            if i > 3:
-                flagList.extend([i,i-1,i-2,i-3,i-4])
-            else:
-                while i >= 0:
-                    flagList.append(i)
-                    i -= 1
-            # 符号右半部分
-            if i < len(content)-4-1:
-                flagList.extend([i,i+1,i+2,i+3,i+4])
-            else:
-                while i < len(content):
-                    flagList.append(i)
-                    i += 1
-    # 获取过滤结果
-    flagList = list(set(flagList))
-    for i in range(len(content)):
-        if i not in flagList:
-            contentList.append(content[i])
-    return ''.join(contentList)
+# r = redis.Redis(host=index.REDIS_HOST, port=index.REDIS_PORT, password=index.REDIS_PASSWORD, db=index.REDIS_DB)
+# for item in r.lrange('product_tags',0,r.llen('product_tags')):
+#     print(item.decode('utf-8'))
+# print(type(r.lrange('person_tags', 0, r.llen('person_tags'))),r.lrange('person_tags', 0, r.llen('person_tags')))
 
 
 
 
+# print(isinstance([],list))
+
+# def getStartIndex(index,cake):  # 上上签是一个电子签约云平台，致力于帮助互联网金融
+#     if cake:
+#         leftIndexList = [left.start() for left in re.finditer('，|。|！',cake)]
+#         # print(leftIndexList)
+#         if leftIndexList:
+#             return leftIndexList[len(leftIndexList)-1]
+#         else:
+#             return 0
+#
+# def getEndIndex(index,cake):
+#     if cake:
+#         # print(index,cake)
+#         rightIndexList = [right.start() for right in re.finditer('，|。|！',cake)]
+#         # print(rightIndexList)
+#         if rightIndexList:
+#             return index + rightIndexList[0] + 1
+#         else:
+#             return index + len(cake)
+#
+# def getCleanedContent(testTxt):
+#     """
+#         过滤掉凡是有特殊符号存在的子句
+#     """
+#     targetIndexList = [target.start() for target in re.finditer('、', testTxt)]  # [24, 29, 34, 38]
+#     if targetIndexList:
+#         # print(targetIndexList)
+#         # print(testTxt[targetIndexList[len(targetIndexList)-1]+1:])
+#         if targetIndexList[len(targetIndexList) - 1] < len(testTxt):
+#             # 找到前一个标点的索引
+#             leftIndex = getStartIndex(targetIndexList[0], testTxt[:targetIndexList[0]])
+#             print('leftIndex:', leftIndex)
+#             # print(testTxt[0:leftIndex])
+#             # 找到后一个标签的索引
+#             rightIndex = getEndIndex(targetIndexList[len(targetIndexList) - 1],
+#                                      testTxt[targetIndexList[len(targetIndexList) - 1] + 1:])
+#             print('rightIndex:', rightIndex)
+#             # print(testTxt[rightIndex+1:])
+#             if testTxt[0:leftIndex]:
+#                 resultTxt = testTxt[0:leftIndex] + '。' + testTxt[rightIndex + 1:]
+#             else:
+#                 resultTxt = testTxt[0:leftIndex] + testTxt[rightIndex + 1:]
+#             print('resultTxt:', resultTxt)
+#             return resultTxt
+#     return testTxt
+#
+# def getInputContent(contentList):
+#     resultList = []
+#     for item in contentList:
+#         if item:
+#             resultList.append(item.strip()+'。')
+#     return resultList
+#
+#
+# def getCleanedContent2(content):
+#     """
+#         分词之后获取符号两边的2个词
+#     """
+#     flagList = []
+#     contentList = []
+#     cakeList = list(jieba.cut(content))
+#     # 标记flag索引位置
+#     for i in range(len(cakeList)):
+#         if cakeList[i] in ['、','和','以及']:  # 找到符号索引
+#             # 符号左半部分
+#             if i > 1:
+#                 flagList.extend([i,i-1,i-2])
+#             else:
+#                 while i >= 0:
+#                     flagList.append(i)
+#                     i -= 1
+#             # 符号右半部分
+#             if i < len(cakeList)-2-1:
+#                 flagList.extend([i,i+1,i+2])
+#             else:
+#                 while i < len(cakeList):
+#                     flagList.append(i)
+#                     i += 1
+#     # 获取过滤结果
+#     flagList = list(set(flagList))
+#     for i in range(len(cakeList)):
+#         if i not in flagList:
+#             contentList.append(cakeList[i])
+#     return ''.join(contentList)
+#
+# def getCleanedContent3(content):
+#     """
+#         按照4个字符，分别在两边过滤信息
+#     """
+#     flagList = []
+#     contentList = []
+#     # cakeList = list(jieba.cut(content))
+#     # 标记flag索引位置
+#     for i in range(len(content)):
+#         # if cakeList[i] in ['、','和','以及']:  # 找到符号索引
+#         if content[i] in ['、']:  # 找到符号索引
+#             # 符号左半部分
+#             if i > 3:
+#                 flagList.extend([i,i-1,i-2,i-3,i-4])
+#             else:
+#                 while i >= 0:
+#                     flagList.append(i)
+#                     i -= 1
+#             # 符号右半部分
+#             if i < len(content)-4-1:
+#                 flagList.extend([i,i+1,i+2,i+3,i+4])
+#             else:
+#                 while i < len(content):
+#                     flagList.append(i)
+#                     i += 1
+#     # 获取过滤结果
+#     flagList = list(set(flagList))
+#     for i in range(len(content)):
+#         if i not in flagList:
+#             contentList.append(content[i])
+#     return ''.join(contentList)
+
+# if __name__ == '__main__':
+#
+#     result = ''
+#     testTxt = """蓝色互动是一家移动应用开发商和配套服务提供商，致力于为电子商务、在线教育、互联网金融、酒店旅游、餐饮娱乐等不同行业客户提供基于移动应用的整体解决方案。"""
+#     testTxt = """上上签是一个电子签约云平台，致力于帮助互联网金融、商业地产、在线教育、O2O、电商等诸多行业解决远程缔约的问题，是目前行业内唯一支持全平台。杭州尚尚签网络科技有限公司旗下产品。"""
+#     testTxt = """拓尔思是一家大数据技术服务公司，推出海贝大数据管理平台和水晶分布式数据库平台，提供大数据分析挖掘云服务平台，为政府、媒体、安全、金融、教育、企业等领域提供大数据应用解决方案。"""
+#     testTxt = """新学说是由国际学校资深专家团队创建的K12国际教育智库。新学说的《中国国际学校发展报告》成为行业最权威研究报告。目前已经为近10家公司提供相关咨询服务。包括金融街控股、新东方教育集团、首控基金、爱文国际学校等。"""
+#     testTxt = """族谱科技是一个大数据运营服务及解决方案公司，可为互联网金融、互联网保险、教育机构、人力资源等各行业企业提供有竞争力的求证解决方案和服务。"""
+#     testTxt = """口袋地推是一个专注于为企业提供地推解决方案的公司，行业分布在互联网金融、电商、在线教育、服务业等领域，致力于将客户的推广需求转化为了执行规范和落地推广，隶属于广州极豆网络科技有限公司。"""
+#     testTxt = """暴雪金融是一个不良资产安全投融资服务平台，专注文化领域的消费金融体验，涵盖文化、娱乐、教育、影视、旅游、游戏全领域。"""
+#     testTxt = """美洽是一款精致、实用的在线客服软件，为企业快速搭建和用户实时沟通的桥梁。通过多平台接入、在线沟通、访客列表，历史对话、数据报表等模块，多方位的支持企业完成客服工作，帮助企业提高客户服务质量和营销转化率。目前，美洽已为超过 30，000 家企业提供服务，用户遍及医疗、教育、互联网、电子商务、金融、旅游等行业。"""
+#
+#     testTxt = """我是大梦想家"""
+
+
+    # inputFilePath = io.getProcessedFilePath('itjzProductCompany_signal_dy2.csv')
+    # infoList = io.readListFromTxt(inputFilePath)
+    # i = 1
+    # for item in infoList:
+    #     contentList = item.split(',')
+    #     print(i,contentList[1])
+    #     print(i,getCleanedContent2(contentList[1]))
+    #     i += 1
 
 
 
 
-if __name__ == '__main__':
-
-    result = ''
-    testTxt = """蓝色互动是一家移动应用开发商和配套服务提供商，致力于为电子商务、在线教育、互联网金融、酒店旅游、餐饮娱乐等不同行业客户提供基于移动应用的整体解决方案。"""
-    testTxt = """上上签是一个电子签约云平台，致力于帮助互联网金融、商业地产、在线教育、O2O、电商等诸多行业解决远程缔约的问题，是目前行业内唯一支持全平台。杭州尚尚签网络科技有限公司旗下产品。"""
-    testTxt = """拓尔思是一家大数据技术服务公司，推出海贝大数据管理平台和水晶分布式数据库平台，提供大数据分析挖掘云服务平台，为政府、媒体、安全、金融、教育、企业等领域提供大数据应用解决方案。"""
-    testTxt = """新学说是由国际学校资深专家团队创建的K12国际教育智库。新学说的《中国国际学校发展报告》成为行业最权威研究报告。目前已经为近10家公司提供相关咨询服务。包括金融街控股、新东方教育集团、首控基金、爱文国际学校等。"""
-    testTxt = """族谱科技是一个大数据运营服务及解决方案公司，可为互联网金融、互联网保险、教育机构、人力资源等各行业企业提供有竞争力的求证解决方案和服务。"""
-    testTxt = """口袋地推是一个专注于为企业提供地推解决方案的公司，行业分布在互联网金融、电商、在线教育、服务业等领域，致力于将客户的推广需求转化为了执行规范和落地推广，隶属于广州极豆网络科技有限公司。"""
-    testTxt = """暴雪金融是一个不良资产安全投融资服务平台，专注文化领域的消费金融体验，涵盖文化、娱乐、教育、影视、旅游、游戏全领域。"""
-    testTxt = """美洽是一款精致、实用的在线客服软件，为企业快速搭建和用户实时沟通的桥梁。通过多平台接入、在线沟通、访客列表，历史对话、数据报表等模块，多方位的支持企业完成客服工作，帮助企业提高客户服务质量和营销转化率。目前，美洽已为超过 30，000 家企业提供服务，用户遍及医疗、教育、互联网、电子商务、金融、旅游等行业。"""
 
 
-    inputFilePath = io.getProcessedFilePath('itjzProductCompany_signal_dy2.csv')
-    infoList = io.readListFromTxt(inputFilePath)
-    i = 1
-    for item in infoList:
-        contentList = item.split(',')
-        print(i,contentList[1])
-        print(i,getCleanedContent3(contentList[1]))
-        i += 1
+
+
+
 
 
     ## 最开始按整句剔除的逻辑
