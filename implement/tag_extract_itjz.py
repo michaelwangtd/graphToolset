@@ -121,6 +121,33 @@ def scanTheme2Tag(themeList,tagbaseFilePath):
     return tagList
 
 
+def getDescAverageLen(dicList):
+    '''
+        统计description的长度
+    '''
+    sumNum = 0
+    recordNum = 0
+    for key,value in dicList.items():
+        if key:
+            recordNum += 1
+            sumNum = sumNum + len(value['productDesc'])
+    print('总记录数：',recordNum)
+    print('desc总长度：',sumNum)
+    print('平均长度：',sumNum/recordNum)
+
+
+def filterTagFromTagbase(content,tagbaseFilePath):
+    resultList = []
+    # 获取标签库列表
+    tagbaseList = io.readListFromTxt(tagbaseFilePath)
+    for item in tagbaseList:
+        if item in content:
+            resultList.append(item)
+    return resultList
+
+
+
+
 if __name__ == '__main__':
 
     tagbaseNameList = ['industry_tags']
@@ -133,11 +160,14 @@ if __name__ == '__main__':
     itjzInfoList = io.loadData2Json(itjzFilePath)
 
     fw = open(itjzOutputFilePath,'w',encoding='utf-8')
-    fw.write('name,desc,originalTag,cutWordTag,stringTag' + '\n')
+    fw.write('name,desc,originalTag,cutWordTag,stringTag,scanTagCutword,scanTagString' + '\n')
 
     # 1 获取公司实体
     productCompanyDicList = getProductCompanyList(itjzInfoList)
     print('productCompany字典长度：',len(productCompanyDicList))
+
+    # 计算productDesc的平均长度
+    # length = getDescAverageLen(productCompanyDicList)
 
     # 2 获取标签库标签，生成标签文本
     tagbaseDic = util.getTagbaseDic(tagbaseNameList)
@@ -148,6 +178,8 @@ if __name__ == '__main__':
     i = 1
     j = 0
     k = 0
+    m = 0
+    n = 0
     # 4 遍历公司实体
     for key,value in productCompanyDicList.items():
         # 5 获取干净的描述
@@ -160,17 +192,27 @@ if __name__ == '__main__':
         stringTagList = extractTag(cleanedDescStr,itjzTagbaseFilePath)
         if stringTagList:
             k += 1
+        # 6.5 直接从标签库中筛选标签
+        cutWordFilterTagList = filterTagFromTagbase(cleanedDescJieba,itjzTagbaseFilePath)
+        if cutWordFilterTagList:
+            m += 1
+        stringFilterTagList = filterTagFromTagbase(cleanedDescStr,itjzTagbaseFilePath)
+        if stringFilterTagList:
+            n += 1
         # 7 构建输出信息并输出
         companyName = value['name']
         desc = value['productDesc']
         originalTag = value['productTags']
-        outputLine = companyName + ',' + desc.replace(',','，') + ',' + ' '.join(originalTag) + ',' + ' '.join(cutWordTagList) + ',' + ' '.join(stringTagList)
+        outputLine = companyName + ',' + desc.replace(',','，') + ',' + ' '.join(originalTag) + ',' + ' '.join(cutWordTagList) + ',' + ' '.join(stringTagList) + ',' +\
+                    ' '.join(cutWordFilterTagList) + ',' + ' '.join(stringFilterTagList)
         fw.write(outputLine + '\n')
         print(i,cutWordTagList)
         i += 1
-    fw.close()
     print('分词获取标签的记录数：',j)
     print('字符串获取标签的记录数：',k)
+    print('分词直接匹配的记录数：',m)
+    print('字符串直接匹配的记录数：',n)
+    fw.close()
 
 
 
