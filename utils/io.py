@@ -123,3 +123,9 @@ def writeList2Txt(filePath,infoList):
             f.close()
 
 
+def dic2json(dic):
+    '''
+        将字典格式转化为json格式
+    '''
+    return json.dumps(dic,ensure_ascii=False)
+

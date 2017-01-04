@@ -8,6 +8,41 @@ from utils import io,cutWord
 import time
 import redis
 import tensorflow as tf
+from implement import tag_extract_itjz
+
+
+
+
+# dic = {'a':'1','b':'你好'}
+# print(type(dic))
+# result = json.dumps(dic,ensure_ascii=False)
+# print(result)
+# print(type(result))
+
+
+
+# def cutWord(content):
+#     return list(jieba.cut(content))
+
+
+# testTxt = """咕啦电商是一家基于体彩网店的社区电商和O2O服务平台，提供代收发快递、商品代购、小微金融、小型家政服务等等。厦门市咕啦电子商务有限责任公司旗下产品。"""
+#
+#
+# itjzTagbaseFilePath = io.getProcessedFilePath('itjz_extract_theme_tagbase.txt')
+# # 加载自定义词库
+# jieba.load_userdict(itjzTagbaseFilePath)
+# # print('精确模式',list(jieba.cut(testTxt)))
+# # print('全模式',list(jieba.cut(testTxt,cut_all=True)))
+# # print('搜索引擎模式',list(jieba.cut_for_search(testTxt)))
+# re1 = tag_extract_itjz.getCleanedContentJieBa(testTxt)
+# re2 = tag_extract_itjz.getCleanedContentString(testTxt)
+# print('分词：',re1)
+# print('字符匹配:',re2)
+# print('提取的主题：',jieba.analyse.extract_tags(re1))
+# tag1 = tag_extract_itjz.extractTag(re1,itjzTagbaseFilePath)
+# tag2 = tag_extract_itjz.extractTag(re2,itjzTagbaseFilePath)
+# print('分词：',tag1)
+# print('字符匹配：',tag2)
 
 
 

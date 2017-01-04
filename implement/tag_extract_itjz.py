@@ -31,10 +31,11 @@ def getCleanedContentJieBa(content):
     """
     flagList = []
     contentList = []
-    cakeList = list(jieba.cut(content))
+    cakeList = list(jieba.cut(content,cut_all=True))
     # 标记flag索引位置
     for i in range(len(cakeList)):
-        if cakeList[i] in ['、','和','以及']:  # 找到符号索引
+        # if cakeList[i] in ['、','和','以及']:  # 找到符号索引
+        if cakeList[i] in ['、','以及']:  # 找到符号索引
             # 符号左半部分
             if i > 1:
                 flagList.extend([i,i-1,i-2])
