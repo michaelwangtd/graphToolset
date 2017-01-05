@@ -3,7 +3,6 @@
 
 from utils import io,util,cutWord,webpage
 import jieba
-import test
 """
     target：产品公司实体打标签
     data source：investEvents_20161227144154.txt（it桔子+新芽）

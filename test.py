@@ -4,11 +4,57 @@ import json
 import index
 import jieba.analyse
 # from collections import *
-from utils import io,cutWord
+from utils import io,cutWord,util,webpage
 import time
 import redis
 import tensorflow as tf
 from implement import tag_extract_itjz
+import math
+from implement import iron_tag_all_info
+import numpy as np
+
+
+
+class Network(object):
+
+    def __init__(self,sizes):
+        self.num_layers = len(sizes)
+        self.sizes = sizes
+        self.biases = [np.random.randn(y,1) for y in sizes[1:]]
+        self.weights = [np.random.randn(y,x) for x,y in zip(sizes[:-1],sizes[1:])]
+
+sizes = [2,3,1]
+# print([np.random.randn(y,1) for y in sizes[1:]])
+for item in [np.random.randn(y,1) for y in sizes[1:]]:
+    print(type(item),item)
+    print(item[0][0])
+# print(type([np.random.randn(y,1) for y in sizes[1:]]))
+
+# print(np.random.randn(3,1))
+# print(np.random.randn(1,3))
+# print(np.random.randn(2,2))
+# print(np.random.randn(1,1))
+
+
+
+
+
+# testTxt = """北京云觅信息科技有限公司（简称“虎嗅网”）成立于2012年2月24日，注册资本176.47万元人民币。主要致力于打造有视角的商业咨询与交流平台。"""
+# cleanedContent = iron_tag_all_info.getCleanedDesc(testTxt)
+# print('干净的数据:',cleanedContent)
+# cutWordList = iron_tag_all_info.getCutWordList(cleanedContent)
+# print('分词后的数据：',cutWordList)
+# result = iron_tag_all_info.extractTag(cutWord)
+# print('提取的关键词：',result)
+
+
+# print(type(math.sqrt(784)))
+# print(64*64)
+
+
+# tagbaseDic = util.getTagbaseDic(['product_tags'])
+# print(len(tagbaseDic['product_tags']))
+# print(tagbaseDic['product_tags'])
 
 
 
