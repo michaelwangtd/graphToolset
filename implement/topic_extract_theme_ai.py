@@ -144,79 +144,80 @@ if __name__ == '__main__':
         直接读取文章，根据输入标签筛选出目标文章
         封装目标文章格式，并持久化
     """
-    # fieldTagList = index.TRANSIT_TAG_LIST
-    #
-    # # outputFilePath = io.getProcessedFilePath('topic_ai_theme.csv')
+    fieldTagList = index.ARTIFICIAL_INTELLIGENCE_TAG_LIST
+
+    outputFilePath = io.getProcessedFilePath('topic_ai_theme.csv')
     # outputFilePath = io.getProcessedFilePath('topic_transit_theme.csv')
-    #
-    # # 路径
-    # krTagFilePath = io.getSourceFilePath('topic_article_kr.txt')
-    # pwTagFilePath = io.getSourceFilePath('topic_article_pw.txt')
-    #
-    # # 读取信息
-    # krArticleList = io.loadData2Json(krTagFilePath)
-    # pwArticleList = io.loadData2Json(pwTagFilePath)
-    # infoList = krArticleList + pwArticleList
-    #
-    # fw = open(outputFilePath,'w',encoding='utf-8')
-    # # fw.write('title,theme,originTag' + '\n')
-    #
-    # for item in infoList:
-    #     if item['tag']:
-    #         if isThemeInFieldTagList(item['tag'],fieldTagList):
-    #             title = item['title']
-    #             tagList = item['tag']
-    #             originalTagList = item['originalTag']
-    #             outputLine = title.replace(',','') + ',' + ' '.join(tagList) + ',' + ' '.join(originalTagList)
-    #             fw.write(outputLine + '\n')
-    # fw.close()
 
-
-    """
-        导出固定格式文件
-        AI领域：title,idf tag,theme
-    """
-    aiThemeFilePath = io.getProcessedFilePath('topic_ai_theme.csv')
-    wordListFilePath = io.getSourceFilePath('tagbase.txt')
-
-    jieba.load_userdict(wordListFilePath)
-
-    # 获取ai文章列表
-    aiArticleList = []
-    fr = open(aiThemeFilePath,'r',encoding='utf-8')
-    while True:
-        line = fr.readline().strip()
-        if line:
-            lineList = line.split(',')
-            aiArticleList.append(lineList[0].replace('\ufeff',''))
-        else:
-            break
-    # print(len(aiArticleList),aiArticleList)
-
+    # 路径
     krTagFilePath = io.getSourceFilePath('topic_article_kr.txt')
     pwTagFilePath = io.getSourceFilePath('topic_article_pw.txt')
-    scan_ai_article = io.getProcessedFilePath('scan_ai_article.csv')
 
     # 读取信息
     krArticleList = io.loadData2Json(krTagFilePath)
     pwArticleList = io.loadData2Json(pwTagFilePath)
     infoList = krArticleList + pwArticleList
 
-    fw = open(scan_ai_article,'w',encoding='utf-8')
-    fw.write('title,tag,tfidf' + '\n')
+    fw = open(outputFilePath,'w',encoding='utf-8')
+    # fw.write('title,theme,originTag' + '\n')
 
-    i = 1
     for item in infoList:
-        if item['title'] in aiArticleList:
-            content = item['content']
-            cutOne = cutWord.cutStopWord(content)
-            cutTwo = cutWord.cutNoiseWord(cutOne)
-            tagList = jieba.analyse.extract_tags(cutTwo)
-            themeList = extractTheme(tagList,wordListFilePath)
-            print(i,themeList,tagList)
-            i += 1
-            outputLine = item['title'] + ',' + ' '.join(themeList) + ',' + ' '.join(tagList)
-            fw.write(outputLine + '\n')
+        if item['tag']:
+            if isThemeInFieldTagList(item['tag'],fieldTagList):
+                title = item['title']
+                tagList = item['tag']
+                originalTagList = item['originalTag']
+                outputLine = title.replace(',','') + ',' + ' '.join(tagList) + ',' + ' '.join(originalTagList)
+                fw.write(outputLine + '\n')
     fw.close()
+
+
+    """
+        导出固定格式文件
+        AI领域：title,idf tag,theme
+        属于特定需求的代码，不属于主流程上的代码
+    """
+    # aiThemeFilePath = io.getProcessedFilePath('topic_ai_theme.csv')
+    # wordListFilePath = io.getSourceFilePath('tagbase.txt')
+    #
+    # jieba.load_userdict(wordListFilePath)
+    #
+    # # 获取ai文章列表
+    # aiArticleList = []
+    # fr = open(aiThemeFilePath,'r',encoding='utf-8')
+    # while True:
+    #     line = fr.readline().strip()
+    #     if line:
+    #         lineList = line.split(',')
+    #         aiArticleList.append(lineList[0].replace('\ufeff',''))
+    #     else:
+    #         break
+    # # print(len(aiArticleList),aiArticleList)
+    #
+    # krTagFilePath = io.getSourceFilePath('topic_article_kr.txt')
+    # pwTagFilePath = io.getSourceFilePath('topic_article_pw.txt')
+    # scan_ai_article = io.getProcessedFilePath('scan_ai_article.csv')
+    #
+    # # 读取信息
+    # krArticleList = io.loadData2Json(krTagFilePath)
+    # pwArticleList = io.loadData2Json(pwTagFilePath)
+    # infoList = krArticleList + pwArticleList
+    #
+    # fw = open(scan_ai_article,'w',encoding='utf-8')
+    # fw.write('title,tag,tfidf' + '\n')
+    #
+    # i = 1
+    # for item in infoList:
+    #     if item['title'] in aiArticleList:
+    #         content = item['content']
+    #         cutOne = cutWord.cutStopWord(content)
+    #         cutTwo = cutWord.cutNoiseWord(cutOne)
+    #         tagList = jieba.analyse.extract_tags(cutTwo)
+    #         themeList = extractTheme(tagList,wordListFilePath)
+    #         print(i,themeList,tagList)
+    #         i += 1
+    #         outputLine = item['title'] + ',' + ' '.join(themeList) + ',' + ' '.join(tagList)
+    #         fw.write(outputLine + '\n')
+    # fw.close()
 
 

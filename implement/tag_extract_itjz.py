@@ -152,6 +152,7 @@ def filterTagFromTagbase(content,tagbaseFilePath):
 if __name__ == '__main__':
 
     tagbaseNameList = ['industry_tags']
+    initDic = {}
 
     # 获取路径
     itjzFilePath = io.getSourceFilePath('investEvents_20161019121629.txt')
@@ -171,7 +172,7 @@ if __name__ == '__main__':
     # length = getDescAverageLen(productCompanyDicList)
 
     # 2 获取标签库标签，生成标签文本
-    tagbaseDic = util.getTagbaseDic(tagbaseNameList)
+    tagbaseDic = util.getTagbaseDicFromRedis(initDic,tagbaseNameList)
     # 生成标签库文本
     util.persistentTagbase(tagbaseDic,itjzTagbaseFilePath)
     # 3 加载标签库为分词做准备

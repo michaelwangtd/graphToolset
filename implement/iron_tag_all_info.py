@@ -75,6 +75,8 @@ def mergeTag(ironTagList,originTagList):
 if __name__ == '__main__':
 
     tagbaseNameList = ['industry_tags']
+    # tagbaseDic初始化的变量
+    initDic = {}
     # newseed taged info list
     newseedInfoDic = {}
     # file path
@@ -85,7 +87,7 @@ if __name__ == '__main__':
     # get infoList
     infoList = io.loadData2Json(inputFilePath)
     # persist tagbase from redis
-    tagbaseDic = util.getTagbaseDic(tagbaseNameList)
+    tagbaseDic = util.getTagbaseDicFromRedis(initDic,tagbaseNameList)
     util.persistentTagbase(tagbaseDic,tagbaseFilePath)
     # load cut word user dict
     jieba.load_userdict(tagbaseFilePath)
