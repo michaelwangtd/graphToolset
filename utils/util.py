@@ -8,7 +8,19 @@ from utils import io
     普通的处理类
 """
 
+def list2str(cakeList,linkSymbol = ' '):
+    '''
+        使用指定的链接符号linkSymbol，将列表转换成字符串
+        默认的链接符号linkSymbol为‘空格’
+    '''
+    if isinstance(cakeList,list):
+        return linkSymbol.join(cakeList)
+
+
 def double2one(doubleList):
+    '''
+        列表去重
+    '''
     return list(set(doubleList))
 
 

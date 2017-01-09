@@ -99,6 +99,10 @@ def loadData2Json(filePath):
 
 
 def readListFromTxt(filePath):
+    '''
+        读取文本信息形成列表
+        只是将整行内容存储到列表中
+    '''
     infoList = []
     if os.path.exists(filePath):
         f = open(filePath,'r',encoding='utf-8')
@@ -107,6 +111,26 @@ def readListFromTxt(filePath):
             if line:
                 temp = line.strip()
                 infoList.append(temp)
+            else:
+                break
+        f.close()
+    return infoList
+
+
+def readListFromCSV(filePath):
+    '''
+        读取整行信息形成列表
+        整行信息用‘,’分割成小列表之后再存储到列表中
+    '''
+    infoList = []
+    if os.path.exists(filePath):
+        f = open(filePath,'r',encoding='utf-8')
+        while True:
+            line = f.readline()
+            if line:
+                line = line.strip()
+                lineList = line.split(',')
+                infoList.append(lineList)
             else:
                 break
         f.close()

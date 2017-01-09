@@ -75,7 +75,7 @@ def mergeTag(ironTagList,originTagList):
 if __name__ == '__main__':
 
     tagbaseNameList = ['industry_tags']
-    # tagbaseDic初始化的变量
+    # tagbaseDic init
     initDic = {}
     # newseed taged info list
     newseedInfoDic = {}
