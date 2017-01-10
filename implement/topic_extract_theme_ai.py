@@ -81,6 +81,14 @@ def extractTheme(tagList,tagbaseFilePath):
     return themeList
 
 
+def filterTag(tagList):
+    resultList = []
+    for tag in tagList:
+        if tag not in index.BLACK_TAG_LIST:
+            resultList.append(tag)
+    return resultList
+
+
 if __name__ == '__main__':
 
     """
@@ -164,8 +172,10 @@ if __name__ == '__main__':
     for item in infoList:
         if item['tag']:
             if isThemeInFieldTagList(item['tag'],fieldTagList):
+                # 对标签进行过滤
+                cleanedTagList = filterTag(item['tag'])
                 title = item['title']
-                tagList = item['tag']
+                tagList = cleanedTagList
                 originalTagList = item['originalTag']
                 outputLine = title.replace(',','') + ',' + ' '.join(tagList) + ',' + ' '.join(originalTagList)
                 fw.write(outputLine + '\n')
