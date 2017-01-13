@@ -14,10 +14,25 @@ from implement import iron_tag_all_info
 import numpy as np
 
 
-test = """89,"[('搞笑经济', 6.295814236329918), ('阅读', 5.890349128221754), ('媒体及阅读', 5.379523504455763), ('媒体', 5.197201947661808), ('自媒体', 4.686376323895818), ('新媒体', 4.591066144091493), ('自媒体广告', 4.280911215787654), ('文化娱乐', 3.8979189635315477), ('微博营销', 3.810907586541918)]"
-"""
-splitIndex = test.index(',')
-print(test[:splitIndex],test[splitIndex+1:])
+
+
+frontJsonInputFilePath = io.getUnprocessedFilePath('ad.json')
+frontDic = io.loadData2Json(frontJsonInputFilePath)
+print(type(frontDic),frontDic)
+print(type(frontDic[0]),frontDic[0])
+print(type(frontDic[0]['edges']),frontDic[0]['edges'])
+print(type(frontDic[0]['nodes']),frontDic[0]['nodes'])
+print(type(frontDic[0]['nodes'][0]),frontDic[0]['nodes'][0])
+
+
+
+
+
+
+# test = """89,"[('搞笑经济', 6.295814236329918), ('阅读', 5.890349128221754), ('媒体及阅读', 5.379523504455763), ('媒体', 5.197201947661808), ('自媒体', 4.686376323895818), ('新媒体', 4.591066144091493), ('自媒体广告', 4.280911215787654), ('文化娱乐', 3.8979189635315477), ('微博营销', 3.810907586541918)]"
+# """
+# splitIndex = test.index(',')
+# print(test[:splitIndex],test[splitIndex+1:])
 
 
 
