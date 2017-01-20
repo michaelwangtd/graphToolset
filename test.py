@@ -12,21 +12,75 @@ from implement import tag_extract_itjz
 import math
 from implement import iron_tag_all_info
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
+
+
+html = """<h3 >内容付费大为普及<br/></h3><p>2016年，移动资讯领域主要有两大热点。</p><p>一是内容价值回归，趋势明显。便捷普及的移动支付方式和内容细分领域的版权保护政策为内容付费创造良好的基础条件，内容极大丰富、体验不断提升的同时，消费力的提升让用户更具付费意愿，头部、优质、沉浸式内容从中获益。粉丝经济在诸如直播打赏、付费阅读、音乐数字专辑付费等行为中也扮演了重要的角色。</p><p>内容付费的普及，主要表现在在线视频内容、在线音乐内容、网络文学内容、移动直播内容和资讯内容。去年，乐视、爱奇艺、腾讯视频先后宣布付费会员超过2000万，付费营收同比增长91%。</p><p>二是个性化推荐、算法趋势来临。如腾讯推出天天快报，主打个性化推荐；微博上线头条文章等。</p>
+<p>
+
+<img alt="游戏美食旅游类资讯阅读增长350%以上，垂直类内容创业者可以朝这个方向发力了？" src="https://pic.36krcnd.com/avatar/201701/19103445/vk7y3mee5ohvyi23.png!heading" data-img-size-val="720,540"/\></p>
+
+<h3 >内容创业投资火热<br/></h3><p>2015年7月，Papi酱陆续在微博以及小咖秀上发布搞笑短视频，获取了大量粉丝。后来她又利用变音器发布原创短视频内容，获得众多粉丝。随后，获得
+
+<a href="http://www.ebrun.com/20161227/208358.shtml" target="_self">1200万元的融资</a>
+
+，拉开了内容创业的大幕。目前，Papi酱估值高达3亿元。</p><p>
+
+<a href="http://www.ebrun.com/20161227/208358.shtml" target="_self">2016年10月20日</a>
+
+，罗辑思维正式对外宣布完成B轮融资，估值13.2亿人民币。
+
+<a href="http://finance.jrj.com.cn/tech/2016/12/08233421812707.shtml" target="_self">同年12月8日</a>
+
+，同道文化（网络大V“同道大叔”的运营主体）被美盛文化公司以2.18亿元收购了72.5%的股权。按照这笔交易换算，同道文化的估值正好为3亿元。此后，还有众多内容创业者获得投融资。</p><p>与此同时，各大平台也推出了支持内容创业的政策。</p>
+<p>
+
+<img alt="游戏美食旅游类资讯阅读增长350%以上，垂直类内容创业者可以朝这个方向发力了？" src="https://pic.36krcnd.com/avatar/201701/19103601/v2lhz1nqkicfux0d.png!heading" data-img-size-val="720,540"/\></p>
+
+<p>算数中心统计分析，内容领域2016全年共计254个融资事件发生，集中在早期阶段，内容创作颇受资本青睐，据整理，这些获得投资的内容创作团队普遍扎根在垂直领域，具备强大的原创能力，拥有一众“粉丝”。</p>
+<p>
+
+<img alt="游戏美食旅游类资讯阅读增长350%以上，垂直类内容创业者可以朝这个方向发力了？" src="https://pic.36krcnd.com/avatar/201701/19103618/3si4ve0f6pza98qy.png!heading" data-img-size-val="720,540"/\>
+
+</p>
+<h3 >短视频内容潜力巨大</h3><p>2016年，短视频成为了内容领域乃至移动互联网业最受关注的增长点。分发渠道空前的多样化让优质内容尤为稀缺，短视频创业备受资本青睐。</p><p>据算数中心《短视频行业研究报告》，2016年Q3及之前，搞笑幽默、娱乐生活类短视频获得了最多投资，其他方向相对较少。结合渗透率与增长率来看，诸如军事、汽车、财经等方向的视频内容增长迅速，仍有巨大的增长潜力。</p>"""
+
+# 文本转换成BeautifulSoup使用的格式
+soup = BeautifulSoup(html)
+# print(type(soup))
+# result = soup.find('a')
+# print(type(result),result)
+result = soup.find_all('a')
+# print(type(result))
+for item in result:
+    print(type(item),item)
+    print(item.string,'--',item.get('href'))
 
 
 
 
-frontJsonInputFilePath = io.getUnprocessedFilePath('ad.json')
-frontDic = io.loadData2Json(frontJsonInputFilePath)
-print(type(frontDic),frontDic)
-print(type(frontDic[0]),frontDic[0])
-print(type(frontDic[0]['edges']),frontDic[0]['edges'])
-print(type(frontDic[0]['nodes']),frontDic[0]['nodes'])
-print(type(frontDic[0]['nodes'][0]),frontDic[0]['nodes'][0])
 
 
 
+# url = "http://36kr.com/api/post/5062382/next"
+# header = { 'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36' }
+# r = requests.get(url=url,headers=header)
+# html = r.content.decode('utf-8')
+# # print(html)
+# dic = json.loads(html)
+# # print(type(dic),dic)
+# print(dic['data']['content'])
+# print('title',dic['data']['title'])
 
+
+# frontJsonInputFilePath = io.getUnprocessedFilePath('ad.json')
+# frontDic = io.loadData2Json(frontJsonInputFilePath)
+# print(type(frontDic),frontDic)
+# print(type(frontDic[0]),frontDic[0])
+# print(type(frontDic[0]['edges']),frontDic[0]['edges'])
+# print(type(frontDic[0]['nodes']),frontDic[0]['nodes'])
+# print(type(frontDic[0]['nodes'][0]),frontDic[0]['nodes'][0])
 
 
 # test = """89,"[('搞笑经济', 6.295814236329918), ('阅读', 5.890349128221754), ('媒体及阅读', 5.379523504455763), ('媒体', 5.197201947661808), ('自媒体', 4.686376323895818), ('新媒体', 4.591066144091493), ('自媒体广告', 4.280911215787654), ('文化娱乐', 3.8979189635315477), ('微博营销', 3.810907586541918)]"
