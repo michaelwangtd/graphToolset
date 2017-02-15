@@ -47,21 +47,39 @@ def analyseTag():
     print(i)
 
 
+def getOriginTagList(originTagListString):
+    '''
+        本函数目的是从“36kr”接口数据的extraction_tags字段提取标签
+    '''
+    resultList = []
+    if isinstance(originTagListString,str):
+        originTagList = json.loads(originTagListString)
+        for item in originTagList:
+            resultList.append(item[0])
+
+    return resultList
+
+
+
 if __name__ == '__main__':
 
     # redis标签库key值
     tagbaseNameList = ['industry_tags','research_inst_tags','invs_cmy_tags','university_tags','product_cmy_tags','meeting_tags','person_tags','product_tags']
+    #
+    krOriginSourceFileName = 'origin_html_kr_201701171635.txt'
+    pingwestOriginSourceFileName = 'origin_html_pingwest_201701181122.txt'
+
     # 扩展标tagbase路径
     extendTagbaseFilePath = io.getSourceFilePath('investEvents_20161227144154.txt')
     # 初始化tagbaseDic字典
     tagbaseDic = {}
 
     # 输出路径
-    outputKrFilePath = io.getSourceFilePath('topic_article_kr.txt')
-    outputPwFilePath = io.getSourceFilePath('topic_article_pw.txt')
+    outputKrFilePath = io.getSourceFilePath('topic_article_kr_201701171635.txt')
+    outputPwFilePath = io.getSourceFilePath('topic_article_pw_201701181122.txt')
     # 输入路径
-    krFilePath = io.getSourceFilePath('36kr_result_fetch.txt')
-    pwFilePath = io.getSourceFilePath('sentiment_invest.txt')
+    krFilePath = io.getSourceFilePath(krOriginSourceFileName)
+    pwFilePath = io.getSourceFilePath(pingwestOriginSourceFileName)
     # 标签库路径
     tagbaseFilePath = io.getSourceFilePath('topic_tagbase.txt')
     # outputFilePath = io.getProcessedFilePath('fenci.xls')
@@ -87,13 +105,20 @@ if __name__ == '__main__':
     # 品玩持久化
     # fw = open(outputPwFilePath, 'w', encoding='utf-8')
 
+
+
     # # 品玩文章
     # pwInfoList = io.loadData2Json(pwFilePath)
+    #
+    # # print(type(pwInfoList[0][0]),pwInfoList[0][0])
+    #
     # i = 1
     # for report in pwInfoList:
     #     if report:
     #         try:
-    #             content = report['sentimentInvestDesc']
+    #             content = report[0]['contenthtml']
+    #             # 0 去掉html标签
+    #             content = webpage.extractContentBetweenTags(content)
     #             # 1 自定义停用词修正
     #             cutOne = cutWord.cutStopWord(content)
     #             # 2 过滤掉标签符号等
@@ -103,15 +128,17 @@ if __name__ == '__main__':
     #             # 4 合并规则
     #             # 5 提取标签
     #             themeList = extractTheme(tagList,tagbaseFilePath)
+    #
     #             # print(i,themeList,reportList[2])
     #             # 封装json格式字典
     #             initDic = OrderedDict()
-    #             initDic['title'] = report['sentimentInvestTitle']
-    #             initDic['time'] = report['sentimentInvestDate']
-    #             initDic['url'] = ''
+    #             initDic['title'] = report[0]['title']
+    #             initDic['time'] = report[0]['gtime']
+    #             initDic['url'] = report[0]['posturl']
+    #             initDic['originTag'] = []
     #             initDic['tag'] = themeList
-    #             initDic['originalTag'] = report['sentimentInvestTags']
-    #             initDic['content'] = report['sentimentInvestDesc']
+    #             initDic['content'] = content
+    #             initDic['author'] = report[0]['name']
     #
     #             # 直接写入文件
     #             jsonDic = json.dumps(initDic, ensure_ascii=False)
@@ -121,15 +148,23 @@ if __name__ == '__main__':
     #         except Exception as ex:
     #             print(ex)
 
+
+
     # 36kr文章
-    krInfoList = io.readListFromTxt(krFilePath)
+
+    # krInfoList = io.readListFromTxt(krFilePath)
+    krInfoList = io.loadData2Json(krFilePath)
+
     i = 1
     for report in krInfoList:
         if report:
-            reportList = report.split('\t')
-            if len(reportList) == 4:
+            # reportList = report.split('\t')
+            # if len(reportList) == 4:
                 try:
-                    content = reportList[3].strip()
+                    # content = reportList[3].strip()
+                    content = report['data']['content']
+                    # 0 去掉html标签
+                    content = webpage.extractContentBetweenTags(content)
                     # 1 自定义停用词修正
                     cutOne = cutWord.cutStopWord(content)
                     # 2 过滤掉标签符号等
@@ -142,12 +177,13 @@ if __name__ == '__main__':
                     # print(i,themeList,reportList[2])
                     # 封装json格式字典
                     initDic = OrderedDict()
-                    initDic['title'] = reportList[2]
-                    initDic['time'] = reportList[1]
-                    initDic['url'] = reportList[0]
+                    initDic['title'] = report['data']['title']
+                    initDic['time'] = report['data']['published_at']
+                    initDic['url'] = ''
+                    initDic['originTag'] = getOriginTagList(report['data']['extraction_tags'])
                     initDic['tag'] = themeList
-                    initDic['originalTag'] = []
-                    initDic['content'] = reportList[3]
+                    initDic['content'] = content
+                    initDic['author'] = report['data']['user']['name']
 
                     # 直接写入文件
                     jsonDic = json.dumps(initDic, ensure_ascii=False)
@@ -159,6 +195,8 @@ if __name__ == '__main__':
 
     fw.close()
     print(time.localtime())
+
+
 
 
     # # dicList写入文件
