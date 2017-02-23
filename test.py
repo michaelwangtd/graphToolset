@@ -16,7 +16,18 @@ import requests
 from bs4 import BeautifulSoup
 from implement import tag_the_article
 
-jieba.load_userdict()
+
+# test = 10
+# print(test>>1>>1)
+# print(test<<1)
+# print(test<<1<<1)
+# """
+# 1010 >>1 0101 >>1 0010
+# 1010 << 10100 << 101000
+# """
+
+
+# jieba.load_userdict()
 
 
 # class ListNode(object):
